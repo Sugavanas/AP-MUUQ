@@ -1,0 +1,9 @@
+#btnLogin {
+    -fx-background-color: #0ba500;
+    -fx-text-fill: white;
+}
+
+#btnExit {
+    -fx-background-color: #a50000;
+    -fx-text-fill: white;
+}
