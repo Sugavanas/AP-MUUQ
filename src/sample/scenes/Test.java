@@ -1,5 +1,10 @@
 package sample.scenes;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import sample.Main;
 import sample.db.Questions;
 import sample.objects.Finalist;
@@ -17,6 +23,7 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 
 public class Test {
@@ -40,9 +47,12 @@ public class Test {
     private static Question currentQuestionObject;
     private static Finalist finalist;
     private static String[] answers;
+    private static int timeRemaining;
+    private static Timeline timer;
 
     public static void loadScene(Finalist f) {
         finalist = f;
+        timeRemaining = 5;
         loadQuestions();
 
         //Top Part
@@ -60,12 +70,17 @@ public class Test {
         ivCountryFlag.setPreserveRatio(true);
         ivCountryFlag.setFitWidth(80);
 
+        lblTimeRemaining = new Label("5 Min 00 Sec");
+        lblTimeRemaining.setLayoutX(950);
+        lblTimeRemaining.setLayoutY(15);
+        lblTimeRemaining.setFont(Font.font(25));
+
         finalistPane = new Pane();
         finalistPane.setLayoutX(0);
         finalistPane.setLayoutY(0);
         finalistPane.setMaxSize(1100, 50);
         finalistPane.setMinSize(1100, 50);
-        finalistPane.getChildren().addAll(ivCountryFlag, lblFinalistName, lblFinalistID);
+        finalistPane.getChildren().addAll(ivCountryFlag, lblFinalistName, lblFinalistID, lblTimeRemaining);
 
         //Bottom Part
         lblQuestionNumber = new Label("Question 1 of 25");
@@ -76,12 +91,15 @@ public class Test {
         btnPrevious.setLayoutX(0);
         btnPrevious.setLayoutY(50);
         btnPrevious.setOnAction(e -> back());
+        btnPrevious.setDisable(true);
 
         questionListScrollPane = new ScrollPane();
         questionListScrollPane.setLayoutX(100);
         questionListScrollPane.setLayoutY(50);
-        questionListScrollPane.setMaxSize(750, 50);
-        questionListScrollPane.setStyle("-fx-background-color: #336699;");
+        questionListScrollPane.setMinSize(200, 50);
+        questionListScrollPane.setMaxSize(800, 50);
+        questionListScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        //questionListScrollPane.setStyle("-fx-background-color: #336699;");
         questionListScrollPane.setContent(questionListPane);
 
         btnNext = new Button("Next");
@@ -92,6 +110,7 @@ public class Test {
         btnSubmit = new Button("Submit");
         btnSubmit.setLayoutX(1000);
         btnSubmit.setLayoutY(50);
+        btnNext.setOnAction(e -> submit());
 
         bottomPane = new Pane();
         bottomPane.getChildren().addAll(lblQuestionNumber, btnPrevious, btnNext, btnSubmit);
@@ -141,6 +160,23 @@ public class Test {
 
         //Load the current question into view
         loadQuestion(currentQuestion);
+
+        //set and start a timer (using timeline since modifying UI
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               timeRemaining--;
+               int min = timeRemaining / 60;
+               int sec = timeRemaining % 60;
+               lblTimeRemaining.setText(String.format("%s Min %s Sec", min, sec));
+            }
+        }));
+        timer.setOnFinished(e -> {
+            //Submit function has to run on the UI thread.
+            Platform.runLater(() -> submit());
+        });
+        timer.setCycleCount(timeRemaining);
+        timer.play();
 
         Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
     }
@@ -308,11 +344,14 @@ public class Test {
         questionBtnList = new ArrayList<>();
         for (int i = 1; i <= Questions.count(); i++) {
             Button btn = new Button(String.valueOf(i));
+            btn.setMinWidth(30);
             btn.getStyleClass().add("btnQuestionNumber");
+            int finalI = i; //copying i to finalI so it can be used in lambda expression
+            btn.setOnAction(e -> loadQuestion(finalI));
             questionBtnList.add(btn);
         }
         questionListPane = new HBox();
-        questionListPane.setSpacing(10);
+        questionListPane.setSpacing(5);
         for (Button btn : questionBtnList) {
             questionListPane.getChildren().add(btn);
             System.out.println(btn.getText());
@@ -323,13 +362,32 @@ public class Test {
 
     private static void back() {
         loadQuestion(currentQuestion - 1);
+        btnNext.setDisable(false);
+        if(currentQuestion - 1 <= 0)
+            btnPrevious.setDisable(true);
     }
 
     private static void next() {
         loadQuestion(currentQuestion + 1);
+        btnPrevious.setDisable(false);
+        if(currentQuestion + 1 > Questions.count())
+            btnNext.setDisable(true);
     }
 
-    private static void answerSelected() {
+    private static void submit() {
+        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Submit?");
+        alert.setHeaderText("Submit Answers");
+        alert.setContentText("Are you sure you want to submit?");
+        alert.getButtonTypes().setAll(buttonTypeNo,buttonTypeYes);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes){
+
+        } else {
+            //Do Nothing
+        }
     }
 }

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -31,6 +32,8 @@ public class Login {
     private static ObservableList<Finalist> finalistObservableList;
     private static ComboBox<Finalist> finalistList;
     private static ComboBox<Finalist> countryList;
+
+    private static MediaPlayer countryAnthem;
 
     private static Timeline loginTimeline;
     private static int loginDelay = 1;
@@ -195,7 +198,12 @@ public class Login {
         } else {
             //MAGIC HAPPENS
 
-
+            countryAnthem = new MediaPlayer(finalistList.getValue().getAnthem());
+            countryAnthem.play();
+            countryAnthem.setOnEndOfMedia(() -> {
+                countryAnthem.stop();
+                Test.loadScene(finalistList.getValue());
+            });
             Dialog alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Loading");
             alert.setTitle("MUUQ is loading!!");
@@ -212,6 +220,7 @@ public class Login {
             skipBtn.setMinSize(100, 20);
             skipBtn.setOnAction(e -> {
                 //Change forms here
+                countryAnthem.stop();
                 Test.loadScene(finalistList.getValue());
             });
 

@@ -11,23 +11,18 @@
 .btnQuestionNumber {
     -fx-background-color: #fff;
     -fx-text-fill: black;
-    -fx-pref-width: 10px;
+    -fx-pref-width: 15px;
 }
 
 .btnQuestionNumber.selected {
     -fx-background-color: #f5df02;
-    -fx-text-fill: black;
-    -fx-pref-width: 10px;
 }
 
 .btnQuestionNumber.noanswer {
     -fx-background-color: #f50202;
-    -fx-text-fill: black;
-    -fx-pref-width: 10px;
+    -fx-text-fill: white;
 }
 
 .btnQuestionNumber.answer {
     -fx-background-color: #62ff00;
-    -fx-text-fill: black;
-    -fx-pref-width: 10px;
 }

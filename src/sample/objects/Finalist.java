@@ -1,6 +1,9 @@
 package sample.objects;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+
+import java.nio.file.Paths;
 
 public class Finalist extends Objects{
     private String id;
@@ -59,5 +62,9 @@ public class Finalist extends Objects{
 
     public Image getImage() {
         return new Image("images/profile/" + image);
+    }
+
+    public Media getAnthem() {
+        return new Media(Paths.get("music/" + anthem).toUri().toString());
     }
 }
