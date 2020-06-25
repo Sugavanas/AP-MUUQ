@@ -1,6 +1,7 @@
 package sample.objects;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,10 +85,10 @@ public class Question extends Objects {
         return options;
     }
 
-    public ArrayList<Image> getImageOptions() {
-        ArrayList<Image> r = new ArrayList<>();
+    public ArrayList<ImageView> getImageOptions() {
+        ArrayList<ImageView> r = new ArrayList<>();
         for(String s : this.options) {
-            r.add(new Image("images/questions/" + s));
+            r.add(new ImageView(new Image("images/questions/" + s)));
         }
         return r;
     }

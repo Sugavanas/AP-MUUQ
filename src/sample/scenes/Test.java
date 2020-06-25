@@ -137,13 +137,13 @@ public class Test {
         layout.getChildren().addAll(testPane);
 
         //Load the current question into view
-        loadQuestion(currentQuestion);
+        loadQuestion(4);
 
         Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
     }
 
     public static void loadQuestion(int number) {
-        Question q = Questions.getQuestion(number);
+        Question q = Questions.getQuestion(number - 1);
         clearQuestion();
         lblQuestion.setText(q.getQuestion());
         switch(q.getType()) {
@@ -162,15 +162,86 @@ public class Test {
     }
 
     public static void loadTypeA(Question q) {
+        a.setText(q.getOptions().get(0));
+        b.setText(q.getOptions().get(1));
+        c.setText(q.getOptions().get(2));
+        d.setText(q.getOptions().get(3));
 
+        a.setLayoutX(50);
+        a.setLayoutY(100);
+
+        b.setLayoutX(50);
+        b.setLayoutY(150);
+
+        c.setLayoutX(50);
+        c.setLayoutY(200);
+
+        d.setLayoutX(50);
+        d.setLayoutY(250);
     }
 
     public static void loadTypeB(Question q) {
+        ivQuestion.setImage(q.getQuestionImage());
+        ivQuestion.setLayoutX(500 - Main.getCenterWidth(ivQuestion));
+        ivQuestion.setVisible(true);
+
+        a.setText(q.getOptions().get(0));
+        b.setText(q.getOptions().get(1));
+        c.setText(q.getOptions().get(2));
+        d.setText(q.getOptions().get(3));
+
+        a.setLayoutX(100);
+        a.setLayoutY(250);
+
+        b.setLayoutX(100);
+        b.setLayoutY(300);
+
+        c.setLayoutX(500);
+        c.setLayoutY(250);
+
+        d.setLayoutX(500);
+        d.setLayoutY(300);
 
     }
 
     public static void loadTypeC(Question q) {
+        a.setText("");
+        b.setText("");
+        c.setText("");
+        d.setText("");
 
+        ArrayList<ImageView> options = q.getImageOptions();
+
+        options.get(0).setPreserveRatio(true);
+        options.get(1).setPreserveRatio(true);
+        options.get(2).setPreserveRatio(true);
+        options.get(3).setPreserveRatio(true);
+
+        options.get(0).setFitHeight(170);
+        options.get(1).setFitHeight(170);
+        options.get(2).setFitHeight(170);
+        options.get(3).setFitHeight(170);
+
+        a.setGraphic(options.get(0));
+        b.setGraphic(options.get(1));
+        c.setGraphic(options.get(2));
+        d.setGraphic(options.get(3));
+
+        a.setMaxSize(400, 100);
+        a.setLayoutX(100);
+        a.setLayoutY(50);
+
+        b.setMaxSize(400, 100);
+        b.setLayoutX(100);
+        b.setLayoutY(270);
+
+        c.setMaxSize(400, 100);
+        c.setLayoutX(500);
+        c.setLayoutY(50);
+
+        d.setMaxSize(400, 100);
+        d.setLayoutX(500);
+        d.setLayoutY(270);
     }
 
     private static void clearQuestion() {
