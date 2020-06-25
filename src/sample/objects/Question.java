@@ -33,7 +33,7 @@ public class Question extends Objects {
             this.question = parts[2];
 
             this.options = new ArrayList<>();
-            switch(this.type) {
+            switch (this.type) {
                 case 2:
                     this.questionImage = parts[3];
                     this.options.add(0, parts[4]);
@@ -85,9 +85,25 @@ public class Question extends Objects {
         return options;
     }
 
+    public String getOptionKey(String value) {
+        int i = options.indexOf(value);
+        switch (i) {
+            case 0:
+                return "A";
+            case 1:
+                return "B";
+            case 2:
+                return "C";
+            case 3:
+            default:
+                return "D";
+
+        }
+    }
+
     public ArrayList<ImageView> getImageOptions() {
         ArrayList<ImageView> r = new ArrayList<>();
-        for(String s : this.options) {
+        for (String s : this.options) {
             r.add(new ImageView(new Image("images/questions/" + s)));
         }
         return r;

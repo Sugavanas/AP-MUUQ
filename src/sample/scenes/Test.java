@@ -13,6 +13,7 @@ import sample.db.Questions;
 import sample.objects.Finalist;
 import sample.objects.Question;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class Test {
 
     private static ImageView ivQuestion;
     private static ToggleGroup tg;
-    private static RadioButton a,b,c,d;
+    private static RadioButton a, b, c, d;
 
     private static ScrollPane questionListScrollPane;
     private static HBox questionListPane;
@@ -36,13 +37,13 @@ public class Test {
     private static ArrayList<Button> questionBtnList;
 
     private static int currentQuestion;
+    private static Question currentQuestionObject;
     private static Finalist finalist;
-    private static HashMap<Integer, String> answers;
+    private static String[] answers;
 
     public static void loadScene(Finalist f) {
         finalist = f;
         loadQuestions();
-        answers = new HashMap<>();
 
         //Top Part
         lblFinalistName = new Label("Name: " + finalist.getName());
@@ -74,17 +75,19 @@ public class Test {
         btnPrevious = new Button("Back");
         btnPrevious.setLayoutX(0);
         btnPrevious.setLayoutY(50);
+        btnPrevious.setOnAction(e -> back());
 
         questionListScrollPane = new ScrollPane();
         questionListScrollPane.setLayoutX(100);
         questionListScrollPane.setLayoutY(50);
-        questionListScrollPane.setMaxSize(750,50);
+        questionListScrollPane.setMaxSize(750, 50);
         questionListScrollPane.setStyle("-fx-background-color: #336699;");
         questionListScrollPane.setContent(questionListPane);
 
         btnNext = new Button("Next");
         btnNext.setLayoutX(950);
         btnNext.setLayoutY(50);
+        btnNext.setOnAction(e -> next());
 
         btnSubmit = new Button("Submit");
         btnSubmit.setLayoutX(1000);
@@ -137,35 +140,82 @@ public class Test {
         layout.getChildren().addAll(testPane);
 
         //Load the current question into view
-        loadQuestion(4);
+        loadQuestion(currentQuestion);
 
         Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
     }
 
     public static void loadQuestion(int number) {
-        Question q = Questions.getQuestion(number - 1);
+        //remove all styling first
+        questionBtnList.stream()
+                .filter(btn -> btn.getText().equals(String.valueOf(currentQuestion)))
+                .findFirst()
+                .ifPresent(e -> e.getStyleClass().removeAll("selected", "noanswer", "answer"));
+
+        //Check for answer here
+        if (tg.getSelectedToggle() != null) {
+            String answer = "";
+            if (currentQuestionObject.getType().equals("C")) {
+                //Get the image's file name so we can easily compare answers. Other ways are more complicated.
+                answer = (new File(((ImageView) ((RadioButton) tg.getSelectedToggle()).getGraphic()).getImage().impl_getUrl())).getName();
+            } else {
+                answer = ((RadioButton) tg.getSelectedToggle()).getText();
+            }
+            answers[currentQuestion - 1] = currentQuestionObject.getOptionKey(answer);
+            questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("answer"));
+        } else {
+            questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("noanswer"));
+        }
+
+        //load the next question
+        currentQuestionObject = Questions.getQuestion(number - 1);
         clearQuestion();
-        lblQuestion.setText(q.getQuestion());
-        switch(q.getType()) {
+        lblQuestion.setText(currentQuestionObject.getQuestion());
+        switch (currentQuestionObject.getType()) {
             case "A":
-                loadTypeA(q);
+                loadTypeA();
                 break;
             case "B":
-                loadTypeB(q);
+                loadTypeB();
                 break;
             case "C":
             default:
-                loadTypeC(q);
+                loadTypeC();
                 break;
         }
         currentQuestion = number;
+        questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("selected"));
+        lblQuestionNumber.setText(String.format("Question %s of %s", currentQuestion, Questions.count()));
+
+        //Select already selected answer or clear
+        if (answers[currentQuestion - 1] != null) {
+            System.out.println("Selected: " + answers[currentQuestion - 1]);
+            switch (answers[currentQuestion - 1]) {
+                case "A":
+                    tg.selectToggle(a);
+                    break;
+                case "B":
+                    tg.selectToggle(b);
+                    break;
+                case "C":
+                    tg.selectToggle(c);
+                    break;
+                case "D":
+                    tg.selectToggle(d);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            tg.selectToggle(null);
+        }
     }
 
-    public static void loadTypeA(Question q) {
-        a.setText(q.getOptions().get(0));
-        b.setText(q.getOptions().get(1));
-        c.setText(q.getOptions().get(2));
-        d.setText(q.getOptions().get(3));
+    public static void loadTypeA() {
+        a.setText(currentQuestionObject.getOptions().get(0));
+        b.setText(currentQuestionObject.getOptions().get(1));
+        c.setText(currentQuestionObject.getOptions().get(2));
+        d.setText(currentQuestionObject.getOptions().get(3));
 
         a.setLayoutX(50);
         a.setLayoutY(100);
@@ -180,15 +230,15 @@ public class Test {
         d.setLayoutY(250);
     }
 
-    public static void loadTypeB(Question q) {
-        ivQuestion.setImage(q.getQuestionImage());
+    public static void loadTypeB() {
+        ivQuestion.setImage(currentQuestionObject.getQuestionImage());
         ivQuestion.setLayoutX(500 - Main.getCenterWidth(ivQuestion));
         ivQuestion.setVisible(true);
 
-        a.setText(q.getOptions().get(0));
-        b.setText(q.getOptions().get(1));
-        c.setText(q.getOptions().get(2));
-        d.setText(q.getOptions().get(3));
+        a.setText(currentQuestionObject.getOptions().get(0));
+        b.setText(currentQuestionObject.getOptions().get(1));
+        c.setText(currentQuestionObject.getOptions().get(2));
+        d.setText(currentQuestionObject.getOptions().get(3));
 
         a.setLayoutX(100);
         a.setLayoutY(250);
@@ -204,13 +254,8 @@ public class Test {
 
     }
 
-    public static void loadTypeC(Question q) {
-        a.setText("");
-        b.setText("");
-        c.setText("");
-        d.setText("");
-
-        ArrayList<ImageView> options = q.getImageOptions();
+    public static void loadTypeC() {
+        ArrayList<ImageView> options = currentQuestionObject.getImageOptions();
 
         options.get(0).setPreserveRatio(true);
         options.get(1).setPreserveRatio(true);
@@ -246,24 +291,45 @@ public class Test {
 
     private static void clearQuestion() {
         ivQuestion.setVisible(false);
+        a.setText("");
+        b.setText("");
+        c.setText("");
+        d.setText("");
+        a.setGraphic(null);
+        b.setGraphic(null);
+        c.setGraphic(null);
+        d.setGraphic(null);
     }
 
     public static void loadQuestions() {
         Questions.load();
         currentQuestion = 1;
+        answers = new String[Questions.count()];
         questionBtnList = new ArrayList<>();
-        for(int i = 1; i <= Questions.count(); i++) {
+        for (int i = 1; i <= Questions.count(); i++) {
             Button btn = new Button(String.valueOf(i));
             btn.getStyleClass().add("btnQuestionNumber");
             questionBtnList.add(btn);
         }
         questionListPane = new HBox();
         questionListPane.setSpacing(10);
-        for(Button btn : questionBtnList) {
+        for (Button btn : questionBtnList) {
             questionListPane.getChildren().add(btn);
             System.out.println(btn.getText());
         }
         questionListPane.setMinWidth(questionListPane.getWidth());
         questionListPane.setMinHeight(questionListPane.getHeight());
+    }
+
+    private static void back() {
+        loadQuestion(currentQuestion - 1);
+    }
+
+    private static void next() {
+        loadQuestion(currentQuestion + 1);
+    }
+
+    private static void answerSelected() {
+
     }
 }
