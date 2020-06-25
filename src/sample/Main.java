@@ -3,9 +3,13 @@ package sample;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import sample.db.Finalists;
 import sample.scenes.Login;
 
 public class Main extends Application{
@@ -14,7 +18,13 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Miss Universe Ultimate Quiz");
-        primaryStage.setScene(Login.loadScene(primaryStage));
+        //primaryStage.setScene(Login.loadScene(primaryStage));
+        primaryStage.setResizable(false);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
+
+        Main.primaryStage = primaryStage;
+        //sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
+        Login.loadScene();
         primaryStage.show();
     }
 
@@ -31,8 +41,13 @@ public class Main extends Application{
         return text.getLayoutBounds().getWidth() / 2;
     }
 
-    public static Scene loadCssScene(Scene scene) {
+
+    public static void loadSceneWithCSS(Scene scene) {
         scene.getStylesheets().add("javaFX.css");
-        return scene;
+        primaryStage.setScene(scene);
+    }
+
+    public static void loadScene(Scene scene) {
+        primaryStage.setScene(scene);
     }
 }

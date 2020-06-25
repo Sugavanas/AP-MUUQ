@@ -7,6 +7,7 @@ public class Finalist extends Objects{
     private String name;
     private String password;
     private String country;
+    private String countryImage;
     private String image;
     private String anthem;
 
@@ -22,8 +23,9 @@ public class Finalist extends Objects{
             this.name = parts[1];
             this.password = parts[2];
             this.country = parts[3];
-            this.image = parts[4];
-            this.anthem = parts[5];
+            this.countryImage = parts[4];
+            this.image = parts[5];
+            this.anthem = parts[6];
         } catch (Exception ex) {
             System.out.println("Error Loading."); //TODO log error
         }
@@ -49,6 +51,10 @@ public class Finalist extends Objects{
 
     public String getCountry() {
         return country;
+    }
+
+    public Image getCountryImage() {
+        return new Image("images/country/" + countryImage);
     }
 
     public Image getImage() {

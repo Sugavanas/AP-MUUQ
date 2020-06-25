@@ -7,3 +7,9 @@
     -fx-background-color: #a50000;
     -fx-text-fill: white;
 }
+
+.btnQuestionNumber {
+    -fx-background-color: #fff;
+    -fx-text-fill: black;
+    -fx-pref-width: 10px;
+}

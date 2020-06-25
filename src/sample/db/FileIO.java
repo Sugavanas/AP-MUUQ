@@ -101,6 +101,7 @@ public class FileIO<T extends Objects> {
             return arrayList;
         } catch (FileNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException | NoSuchMethodException ex) {
             System.out.println("ERROR : " + dataDirectory + "  " + ex.getMessage());
+            ex.printStackTrace();
             return new ArrayList<>();
         }
     }
