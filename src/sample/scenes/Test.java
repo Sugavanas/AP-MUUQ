@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import sample.Main;
+import sample.db.Answers;
 import sample.db.Questions;
 import sample.objects.Finalist;
 import sample.objects.Question;
@@ -110,7 +111,7 @@ public class Test {
         btnSubmit = new Button("Submit");
         btnSubmit.setLayoutX(1000);
         btnSubmit.setLayoutY(50);
-        btnNext.setOnAction(e -> submit());
+        btnSubmit.setOnAction(e -> submit());
 
         bottomPane = new Pane();
         bottomPane.getChildren().addAll(lblQuestionNumber, btnPrevious, btnNext, btnSubmit);
@@ -377,7 +378,7 @@ public class Test {
     private static void submit() {
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
-
+        timer.pause();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Submit?");
         alert.setHeaderText("Submit Answers");
@@ -385,8 +386,14 @@ public class Test {
         alert.getButtonTypes().setAll(buttonTypeNo,buttonTypeYes);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
-
+            for (int i = 0; i < answers.length; i++) {
+                if(answers[i] == null) {
+                    answers[i] = "F";
+                }
+            }
+            Answers.addSubmission(finalist.getID(), answers);
         } else {
+            timer.play();
             //Do Nothing
         }
     }
