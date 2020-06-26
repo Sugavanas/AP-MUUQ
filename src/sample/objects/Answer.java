@@ -26,8 +26,9 @@ public class Answer extends Objects {
         try {
             String[] parts = data.split(":");
             this.finalistID = parts[0];
+            this.answers = new ArrayList<>();
             for (int i = 1; i < parts.length; i++) {
-                answers.add(parts[i]);
+                this.answers.add(parts[i]);
             }
         } catch (Exception ex) {
             System.out.println("Error Loading."); //TODO log error
@@ -39,7 +40,7 @@ public class Answer extends Objects {
 
     @Override
     public String saveString() {
-        AtomicReference<String> s = new AtomicReference<>(String.valueOf(finalistID) + ":");
+        AtomicReference<String> s = new AtomicReference<>(String.valueOf(finalistID) + ":"); //Atomic reference since we modifying with lambda
         answers.forEach(a -> { s.set( s.get() + a + ":"); });
         return s.get().substring(0, s.get().length()-1); //remove last ':'
     }
@@ -53,5 +54,7 @@ public class Answer extends Objects {
         return finalist;
     }
 
-
+    public ArrayList<String> getAnswers() {
+        return answers;
+    }
 }

@@ -17,6 +17,7 @@ import javafx.util.Duration;
 import sample.Main;
 import sample.db.Answers;
 import sample.db.Questions;
+import sample.objects.Answer;
 import sample.objects.Finalist;
 import sample.objects.Question;
 
@@ -53,7 +54,7 @@ public class Test {
 
     public static void loadScene(Finalist f) {
         finalist = f;
-        timeRemaining = 5;
+        timeRemaining = 300; //<---- Set time in seconds here
         loadQuestions();
 
         //Top Part
@@ -174,7 +175,7 @@ public class Test {
         }));
         timer.setOnFinished(e -> {
             //Submit function has to run on the UI thread.
-            Platform.runLater(() -> submit());
+            Platform.runLater(() -> processSubmit());
         });
         timer.setCycleCount(timeRemaining);
         timer.play();
@@ -205,7 +206,7 @@ public class Test {
         }
 
         //load the next question
-        currentQuestionObject = Questions.getQuestion(number - 1);
+        currentQuestionObject = Questions.getQuestion(number);
         clearQuestion();
         lblQuestion.setText(currentQuestionObject.getQuestion());
         switch (currentQuestionObject.getType()) {
@@ -386,15 +387,21 @@ public class Test {
         alert.getButtonTypes().setAll(buttonTypeNo,buttonTypeYes);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
-            for (int i = 0; i < answers.length; i++) {
-                if(answers[i] == null) {
-                    answers[i] = "F";
-                }
-            }
-            Answers.addSubmission(finalist.getID(), answers);
+          processSubmit();
         } else {
             timer.play();
             //Do Nothing
         }
+    }
+
+    private static void processSubmit() {
+        timer.stop();
+        for (int i = 0; i < answers.length; i++) {
+            if(answers[i] == null) {
+                answers[i] = "F";
+            }
+        }
+        Answer a = Answers.addSubmission(finalist.getID(), answers);
+        Result.loadScene(a);
     }
 }

@@ -21,6 +21,6 @@ public class Questions {
     }
 
     public static Question getQuestion(int questionNumber) {
-        return questionList.get(questionNumber);
+        return questionList.get(questionNumber - 1);
     }
 }

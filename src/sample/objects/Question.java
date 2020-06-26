@@ -80,6 +80,10 @@ public class Question extends Objects {
         return (this.answerOption.equals(answerOption));
     }
 
+    public String getAnswerOption() {
+        return this.answerOption;
+    }
+
     public ArrayList<String> getOptions() {
         return options;
     }

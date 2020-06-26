@@ -1,0 +1,158 @@
+package sample.scenes;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+import sample.Main;
+import sample.db.Answers;
+import sample.db.Finalists;
+import sample.db.Questions;
+import sample.objects.Answer;
+import sample.objects.Finalist;
+import sample.objects.Question;
+
+import java.util.ArrayList;
+
+public class Result {
+
+    private static Pane selectionPane, resultPane;
+    private static VBox detailedResultPane;
+    private static ScrollPane detailedResultScrollPane;
+    private static Label scoreDetails, percentageScore;
+
+    private static ComboBox<Answer> resultDropDown;
+    private static ObservableList<Answer> answersObservableList;
+
+    public static void loadScene() {
+        loadResults();
+
+        resultDropDown.setLayoutX(0);
+        resultDropDown.setLayoutY(0);
+        resultDropDown.setPromptText("Select finalist");
+        resultDropDown.setMinSize(1000, 50);
+
+        selectionPane = new Pane();
+        selectionPane.setLayoutX(100);
+        selectionPane.setLayoutY(100);
+        selectionPane.getChildren().addAll(resultDropDown);
+
+        detailedResultPane = new VBox();
+        detailedResultPane.setLayoutX(0);
+        detailedResultPane.setLayoutY(0);
+
+        detailedResultScrollPane = new ScrollPane();
+        detailedResultScrollPane.setLayoutX(0);
+        detailedResultScrollPane.setLayoutY(0);
+        detailedResultScrollPane.setMinSize(400, 400);
+        detailedResultScrollPane.setMaxSize(400, 400);
+        detailedResultScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        detailedResultScrollPane.setContent(detailedResultPane);
+
+        percentageScore = new Label();
+        percentageScore.setLayoutX(600);
+        percentageScore.setLayoutY(150);
+        percentageScore.setFont(Font.font(30));
+
+        scoreDetails = new Label();
+        scoreDetails.setLayoutX(600);
+        scoreDetails.setLayoutY(200);
+        scoreDetails.setFont(Font.font(20));
+
+        resultPane = new Pane();
+        resultPane.setLayoutX(100);
+        resultPane.setLayoutY(200);
+        resultPane.getChildren().addAll(detailedResultScrollPane, scoreDetails, percentageScore);
+
+        Pane layout = new Pane();
+        layout.getChildren().addAll(selectionPane);
+        layout.getChildren().addAll(resultPane);
+
+        Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
+    }
+
+    public static void loadScene(Answer a) {
+        loadScene();
+        resultDropDown.setValue(a);
+    }
+
+    private static void loadResults() {
+        answersObservableList = FXCollections.observableArrayList(Answers.getAll());
+        resultDropDown = new ComboBox(answersObservableList);
+
+        Callback<ListView<Answer>, ListCell<Answer>> factoryResult = lv -> new ListCell<Answer>() {
+            @Override
+            protected void updateItem(Answer item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty)
+                    return;
+                ImageView imageView = new ImageView(item.getFinalist().getCountryImage());
+                imageView.setFitHeight(20);
+                imageView.setPreserveRatio(true);
+                setGraphic(imageView);
+                setText(empty ? "" : item.getFinalist().getName() + " - " + item.getID());
+            }
+        };
+
+        resultDropDown.setCellFactory(factoryResult);
+        resultDropDown.setButtonCell(factoryResult.call(null));
+
+        //This is just so we can come to result page from test page and have something selected
+        resultDropDown.setConverter(new StringConverter<Answer>() {
+            @Override
+            public String toString(Answer object) {
+                if(object == null)
+                    return null;
+                else
+                    return object.getFinalist().getName();
+            }
+
+            @Override
+            public Answer fromString(String string) {
+                return null;
+            }
+        });
+
+        resultDropDown.valueProperty().addListener((obs, oldS, newS) -> {
+            if (newS == null) {
+                //TODO: Remove pane
+            } else if (oldS == null || !oldS.getID().equals(newS.getID())) {
+              loadResult(newS);
+            }
+        });
+    }
+
+    private static void loadResult(Answer a) {
+        Questions.load();
+        ArrayList<String> fAnswers = a.getAnswers();
+        detailedResultPane.getChildren().clear();
+        int correctAnswers = 0;
+        for (int i = 0; i < fAnswers.size(); i++) {
+            Label label = new Label();
+            if(Questions.getQuestion(i+1).checkAnswer(fAnswers.get(i))){
+                //answer is correct
+                label.setText(String.format("Question %s correct: %s", i+1, fAnswers.get(i)));
+                label.setStyle("-fx-text-fill: #0dcd01;");
+                correctAnswers++;
+            } else {
+                //answer is wrong
+                label.setText(String.format("Question %s wrong. Chosen %s, correct option %s",
+                        i+1,
+                        fAnswers.get(i),
+                        Questions.getQuestion(i+1).getAnswerOption()
+                ));
+                label.setStyle("-fx-text-fill: #ff0000;");
+            }
+            detailedResultPane.getChildren().add(label);
+        }
+        percentageScore.setText(String.format("%s %% score", Math.round( (Double.parseDouble(String.valueOf(correctAnswers)) / fAnswers.size()) * 100)));
+        scoreDetails.setText(String.format("%s out of %s correct", correctAnswers, fAnswers.size()));
+    }
+}

@@ -10,8 +10,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sample.db.Answers;
 import sample.db.Finalists;
 import sample.scenes.Login;
+import sample.scenes.Winner;
 
 import java.awt.*;
 
@@ -26,8 +28,10 @@ public class Main extends Application{
         //primaryStage.initStyle(StageStyle.UNDECORATED);
 
         Main.primaryStage = primaryStage;
-        sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
+        //sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
+        //sample.scenes.Result.loadScene(Answers.fileIO.getByID(337066));
         //Login.loadScene();
+        Winner.loadScene();
         primaryStage.show();
     }
 
