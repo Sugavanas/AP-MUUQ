@@ -28,10 +28,10 @@ public class Main extends Application{
         //primaryStage.initStyle(StageStyle.UNDECORATED);
 
         Main.primaryStage = primaryStage;
-        //sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
+        sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
         //sample.scenes.Result.loadScene(Answers.fileIO.getByID(337066));
         //Login.loadScene();
-        Winner.loadScene();
+        //Winner.loadScene();
         primaryStage.show();
     }
 

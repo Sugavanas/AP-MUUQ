@@ -76,6 +76,7 @@ public class Test {
         lblTimeRemaining.setLayoutX(950);
         lblTimeRemaining.setLayoutY(15);
         lblTimeRemaining.setFont(Font.font(25));
+        lblTimeRemaining.setStyle("-fx-text-fill: #4daa00");
 
         finalistPane = new Pane();
         finalistPane.setLayoutX(0);
@@ -171,6 +172,10 @@ public class Test {
                int min = timeRemaining / 60;
                int sec = timeRemaining % 60;
                lblTimeRemaining.setText(String.format("%s Min %s Sec", min, sec));
+               if(timeRemaining == 30)
+                   lblTimeRemaining.setStyle("-fx-text-fill: #e50606");
+               else if(timeRemaining == 60)
+                   lblTimeRemaining.setStyle("-fx-text-fill: #ff7a3c");
             }
         }));
         timer.setOnFinished(e -> {
