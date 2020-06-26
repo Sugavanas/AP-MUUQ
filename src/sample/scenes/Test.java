@@ -188,27 +188,8 @@ public class Test {
         Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
     }
 
-    public static void loadQuestion(int number) {
-        //remove all styling first
-        questionBtnList.stream()
-                .filter(btn -> btn.getText().equals(String.valueOf(currentQuestion)))
-                .findFirst()
-                .ifPresent(e -> e.getStyleClass().removeAll("selected", "noanswer", "answer"));
-
-        //Check for answer here
-        if (tg.getSelectedToggle() != null) {
-            String answer = "";
-            if (currentQuestionObject.getType().equals("C")) {
-                //Get the image's file name so we can easily compare answers. Other ways are more complicated.
-                answer = (new File(((ImageView) ((RadioButton) tg.getSelectedToggle()).getGraphic()).getImage().impl_getUrl())).getName();
-            } else {
-                answer = ((RadioButton) tg.getSelectedToggle()).getText();
-            }
-            answers[currentQuestion - 1] = currentQuestionObject.getOptionKey(answer);
-            questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("answer"));
-        } else {
-            questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("noanswer"));
-        }
+    private static void loadQuestion(int number) {
+        checkQuestion();
 
         //load the next question
         currentQuestionObject = Questions.getQuestion(number);
@@ -254,7 +235,7 @@ public class Test {
         }
     }
 
-    public static void loadTypeA() {
+    private static void loadTypeA() {
         a.setText(currentQuestionObject.getOptions().get(0));
         b.setText(currentQuestionObject.getOptions().get(1));
         c.setText(currentQuestionObject.getOptions().get(2));
@@ -273,7 +254,7 @@ public class Test {
         d.setLayoutY(250);
     }
 
-    public static void loadTypeB() {
+    private static void loadTypeB() {
         ivQuestion.setImage(currentQuestionObject.getQuestionImage());
         ivQuestion.setLayoutX(500 - Main.getCenterWidth(ivQuestion));
         ivQuestion.setVisible(true);
@@ -297,7 +278,7 @@ public class Test {
 
     }
 
-    public static void loadTypeC() {
+    private static void loadTypeC() {
         ArrayList<ImageView> options = currentQuestionObject.getImageOptions();
 
         options.get(0).setPreserveRatio(true);
@@ -332,6 +313,28 @@ public class Test {
         d.setLayoutY(270);
     }
 
+    private static void checkQuestion() {
+        //remove all styling first
+        questionBtnList.stream()
+                .filter(btn -> btn.getText().equals(String.valueOf(currentQuestion)))
+                .findFirst()
+                .ifPresent(e -> e.getStyleClass().removeAll("selected", "noanswer", "answer"));
+
+        //Check for answer here
+        if (tg.getSelectedToggle() != null) {
+            String answer = "";
+            if (currentQuestionObject.getType().equals("C")) {
+                //Get the image's file name so we can easily compare answers. Other ways are more complicated.
+                answer = (new File(((ImageView) ((RadioButton) tg.getSelectedToggle()).getGraphic()).getImage().impl_getUrl())).getName();
+            } else {
+                answer = ((RadioButton) tg.getSelectedToggle()).getText();
+            }
+            answers[currentQuestion - 1] = currentQuestionObject.getOptionKey(answer);
+            questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("answer"));
+        } else {
+            questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("noanswer"));
+        }
+    }
     private static void clearQuestion() {
         ivQuestion.setVisible(false);
         a.setText("");
@@ -401,6 +404,7 @@ public class Test {
 
     private static void processSubmit() {
         timer.stop();
+        checkQuestion(); //just make sure whatever question the page is on is answered as well
         for (int i = 0; i < answers.length; i++) {
             if(answers[i] == null) {
                 answers[i] = "F";

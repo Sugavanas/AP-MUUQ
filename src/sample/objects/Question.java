@@ -30,7 +30,6 @@ public class Question extends Objects {
             this.type = Integer.parseInt(parts[0]);
             this.answerOption = parts[1];
             this.question = parts[2];
-
             this.options = new ArrayList<>();
             switch (this.type) {
                 case 2:
@@ -39,6 +38,7 @@ public class Question extends Objects {
                     this.options.add(1, parts[5]);
                     this.options.add(2, parts[6]);
                     this.options.add(3, parts[7]);
+                    break;
                 case 1:
                 case 3:
                 default:

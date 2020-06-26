@@ -19,6 +19,7 @@ public class Answer extends Objects {
     public Answer(String finalistID, ArrayList<String> answers) {
         this.finalistID = finalistID;
         this.answers = answers;
+        this.finalist = Finalists.getFileIO().getByID(Integer.parseInt(finalistID));
     }
 
     @Override

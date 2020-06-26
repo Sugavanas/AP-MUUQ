@@ -36,7 +36,7 @@ public class Login {
     private static MediaPlayer countryAnthem;
 
     private static Timeline loginTimeline;
-    private static int loginDelay = 1;
+    private static int loginDelay = 60;
 
     public static void loadScene() {
         //First load all the data
@@ -224,7 +224,7 @@ public class Login {
                 Test.loadScene(finalistList.getValue());
             });
 
-            loginDelay = 2;
+            loginDelay = 3;
             loginTimeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
