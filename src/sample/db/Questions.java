@@ -5,15 +5,18 @@ import sample.objects.Question;
 import java.util.ArrayList;
 
 public class Questions {
-    private static FileIO<Question> fileIO = new FileIO<>("muuq.txt", Question.class);
     private static ArrayList<Question> questionList;
-
-    /*public static FileIO<Question> getFileIO() {
-        return fileIO;
-    }*/
+    private static String fileName = "muuq.txt";
 
     public static void load() {
-        questionList = fileIO.read();
+        ArrayList<String> lines = FileScanner.read(fileName);
+        questionList = new ArrayList<>();
+
+        //Just loop through the lines we read and put it into an array list.
+        for (String line : lines) {
+            Question q = new Question(line);
+            questionList.add(q);
+        }
     }
 
     public static int count(){

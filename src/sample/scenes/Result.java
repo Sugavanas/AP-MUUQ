@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -13,11 +12,8 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import sample.Main;
 import sample.db.Answers;
-import sample.db.Finalists;
 import sample.db.Questions;
 import sample.objects.Answer;
-import sample.objects.Finalist;
-import sample.objects.Question;
 
 import java.util.ArrayList;
 
@@ -75,7 +71,7 @@ public class Result {
         layout.getChildren().addAll(selectionPane);
         layout.getChildren().addAll(resultPane);
 
-        Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
+        Main.loadScene(new Scene(layout, 1200, 700));
     }
 
     public static void loadScene(Answer a) {

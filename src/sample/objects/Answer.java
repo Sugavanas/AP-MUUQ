@@ -19,7 +19,7 @@ public class Answer extends Objects {
     public Answer(String finalistID, ArrayList<String> answers) {
         this.finalistID = finalistID;
         this.answers = answers;
-        this.finalist = Finalists.getFileIO().getByID(Integer.parseInt(finalistID));
+        this.finalist = Finalists.getByID(finalistID);
     }
 
     @Override
@@ -34,11 +34,15 @@ public class Answer extends Objects {
         } catch (Exception ex) {
             System.out.println("Error Loading."); //TODO log error
         }
-        finalist = Finalists.getFileIO().getByID(Integer.parseInt(finalistID));
+        finalist = Finalists.getByID(finalistID);
 
 
     }
 
+    /**
+     * This method is called when we want to write this to the file. It's easier.
+     * @return
+     */
     @Override
     public String saveString() {
         AtomicReference<String> s = new AtomicReference<>(String.valueOf(finalistID) + ":"); //Atomic reference since we modifying with lambda

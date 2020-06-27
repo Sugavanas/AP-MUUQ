@@ -22,7 +22,7 @@ public class Winner {
         Pane layout = new Pane();
         //layout.getChildren().addAll(resultPane);
 
-        Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
+        Main.loadScene(new Scene(layout, 1200, 700));
     }
 
     private static void loadWinner() {

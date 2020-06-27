@@ -22,16 +22,17 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("Miss Universe Ultimate Quiz");
-        //primaryStage.setScene(Login.loadScene(primaryStage));
-        primaryStage.setResizable(false);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
 
-        Main.primaryStage = primaryStage;
+        Main.primaryStage = primaryStage; //set the primary stage to a static variable so we can access it again.
+
+        primaryStage.setTitle("Miss Universe Ultimate Quiz");
+        primaryStage.setResizable(false);
+
+        Login.loadScene();
         //sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
         //sample.scenes.Result.loadScene(Answers.fileIO.getByID(337066));
-        Login.loadScene();
         //Winner.loadScene();
+
         primaryStage.show();
     }
 
@@ -39,6 +40,14 @@ public class Main extends Application{
         launch(args);
     }
 
+    public static void loadScene(Scene scene) {
+        scene.getStylesheets().add("javaFX.css");
+        primaryStage.setScene(scene);
+    }
+
+    /**
+     * Gets the center width (makes stuff look at exact center)
+     */
     public static double getCenterWidth(Label control) {
         //Modified from: https://stackoverflow.com/questions/46641114/an-alternative-to-fontloader-computestringwidth
         final Text text = new Text(control.getText());
@@ -49,22 +58,11 @@ public class Main extends Application{
     }
 
     public static double getCenterWidth(ImageView control) {
-        //Modified from: https://stackoverflow.com/questions/46641114/an-alternative-to-fontloader-computestringwidth
         final ImageView imageView = new ImageView(control.getImage());
         imageView.setFitWidth(control.getFitWidth());
         imageView.setFitHeight(control.getFitHeight());
         new Scene(new Group(imageView));
         imageView.applyCss();
         return imageView.getLayoutBounds().getWidth() / 2;
-    }
-
-
-    public static void loadSceneWithCSS(Scene scene) {
-        scene.getStylesheets().add("javaFX.css");
-        primaryStage.setScene(scene);
-    }
-
-    public static void loadScene(Scene scene) {
-        primaryStage.setScene(scene);
     }
 }

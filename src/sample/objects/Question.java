@@ -15,7 +15,6 @@ public class Question extends Objects {
     public Question(String data) {
         super(data);
     }
-
     /***
      * 3 types of question
      * type 1 = Text Question + Text Answer
@@ -65,7 +64,12 @@ public class Question extends Objects {
     }
 
     public String getType() {
-        return (this.type == 1 ? "A" : (this.type == 2 ? "B" : "C"));
+        if(this.type == 1)
+            return "A";
+        else if(this.type == 2)
+            return "B";
+        else
+            return "C";
     }
 
     public String getQuestion() {
@@ -86,22 +90,6 @@ public class Question extends Objects {
 
     public ArrayList<String> getOptions() {
         return options;
-    }
-
-    public String getOptionKey(String value) {
-        int i = options.indexOf(value);
-        switch (i) {
-            case 0:
-                return "A";
-            case 1:
-                return "B";
-            case 2:
-                return "C";
-            case 3:
-            default:
-                return "D";
-
-        }
     }
 
     public ArrayList<ImageView> getImageOptions() {

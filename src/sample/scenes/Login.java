@@ -121,12 +121,12 @@ public class Login {
         Pane layout = new Pane();
         layout.getChildren().addAll(loginPane);
 
-        Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
+        Main.loadScene(new Scene(layout, 1200, 700));
     }
 
     private static void loadFinalistList() {
         //https://stackoverflow.com/questions/41201043/javafx-combobox-using-object-property
-        finalistObservableList = FXCollections.observableArrayList(Finalists.getFileIO().read());
+        finalistObservableList = FXCollections.observableArrayList(Finalists.getAll());
 
         finalistList = new ComboBox(finalistObservableList);
         countryList = new ComboBox(finalistObservableList);

@@ -5,10 +5,8 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,9 +20,7 @@ import sample.objects.Finalist;
 import sample.objects.Question;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 
 
@@ -185,7 +181,7 @@ public class Test {
         timer.setCycleCount(timeRemaining);
         timer.play();
 
-        Main.loadSceneWithCSS(new Scene(layout, 1200, 700));
+        Main.loadScene(new Scene(layout, 1200, 700));
     }
 
     private static void loadQuestion(int number) {
@@ -322,18 +318,23 @@ public class Test {
 
         //Check for answer here
         if (tg.getSelectedToggle() != null) {
-            String answer = "";
-            if (currentQuestionObject.getType().equals("C")) {
-                //Get the image's file name so we can easily compare answers. Other ways are more complicated.
-                answer = (new File(((ImageView) ((RadioButton) tg.getSelectedToggle()).getGraphic()).getImage().impl_getUrl())).getName();
-            } else {
-                answer = ((RadioButton) tg.getSelectedToggle()).getText();
-            }
-            answers[currentQuestion - 1] = currentQuestionObject.getOptionKey(answer);
+            answers[currentQuestion - 1] = getSelectedAnswer();
             questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("answer"));
         } else {
             questionBtnList.stream().filter(btn -> btn.getText().equals(String.valueOf(currentQuestion))).findFirst().ifPresent(e -> e.getStyleClass().add("noanswer"));
         }
+    }
+
+    private static String getSelectedAnswer(){
+        if(a.isSelected())
+            return "A";
+        else if(b.isSelected())
+            return "B";
+        else if(c.isSelected())
+            return "C";
+        else if(d.isSelected())
+            return "D";
+        return "F";
     }
     private static void clearQuestion() {
         ivQuestion.setVisible(false);
@@ -404,7 +405,7 @@ public class Test {
 
     private static void processSubmit() {
         timer.stop();
-        checkQuestion(); //just make sure whatever question the page is on is answered as well
+        checkQuestion(); //just to make sure the current question in view is saved as well.
         for (int i = 0; i < answers.length; i++) {
             if(answers[i] == null) {
                 answers[i] = "F";
