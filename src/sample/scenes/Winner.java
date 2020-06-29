@@ -3,6 +3,7 @@ package sample.scenes;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import sample.Main;
 import sample.db.Answers;
 import sample.db.Questions;
@@ -10,11 +11,11 @@ import sample.objects.Answer;
 
 import java.util.ArrayList;
 
-public class Winner {
-    private static Answer winner;
-    private static int correctAnswers, totalQuestions;
+public class Winner extends Stage {
+    private Answer winner;
+    private int correctAnswers, totalQuestions;
 
-    public static void loadScene() {
+    public Winner() {
         loadWinner();
 
         //Add UI Code Here. Any details of winner can be accessed from winner and winner.getFinalist()
@@ -22,10 +23,15 @@ public class Winner {
         Pane layout = new Pane();
         //layout.getChildren().addAll(resultPane);
 
-        Main.loadScene(new Scene(layout, 1200, 700));
+        Scene scene = new Scene(layout, 1200, 700);
+        scene.getStylesheets().add("javaFX.css");
+        this.setScene(scene);
+        this.setTitle("Miss Universe Ultimate Quiz");
+        this.setResizable(false);
+        this.show();
     }
 
-    private static void loadWinner() {
+    private void loadWinner() {
         Questions.load();
         correctAnswers = 0;
         totalQuestions = Questions.count();
@@ -40,7 +46,7 @@ public class Winner {
         System.out.println("Winner is " + winner.getFinalist().getName());
     }
 
-    private static int getScore(Answer a) {
+    private int getScore(Answer a) {
         int score = 0;
         for (int i = 0; i < a.getAnswers().size(); i++) {
             Label label = new Label();

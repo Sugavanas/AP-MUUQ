@@ -20,25 +20,25 @@ import sample.db.Finalists;
 import sample.objects.Finalist;
 
 
-public class Login {
+public class Login extends Stage {
 
-    private static Pane loginPane;
+    private Pane loginPane;
 
-    private static Label title, instruction, lblName, lblPassword, lblCountry;
-    private static PasswordField password;
-    private static Button btnLogin, btnExit;
-    private static ImageView finalistImage, countryFlag;
+    private Label title, instruction, lblName, lblPassword, lblCountry;
+    private PasswordField password;
+    private Button btnLogin, btnExit;
+    private ImageView finalistImage, countryFlag;
 
-    private static ObservableList<Finalist> finalistObservableList;
-    private static ComboBox<Finalist> finalistList;
-    private static ComboBox<Finalist> countryList;
+    private ObservableList<Finalist> finalistObservableList;
+    private ComboBox<Finalist> finalistList;
+    private ComboBox<Finalist> countryList;
 
-    private static MediaPlayer countryAnthem;
+    private MediaPlayer countryAnthem;
 
-    private static Timeline loginTimeline;
-    private static int loginDelay = 60;
+    private Timeline loginTimeline;
+    private int loginDelay = 60;
 
-    public static void loadScene() {
+    public Login() {
         //First load all the data
         loadFinalistList();
 
@@ -120,11 +120,15 @@ public class Login {
 
         Pane layout = new Pane();
         layout.getChildren().addAll(loginPane);
-
-        Main.loadScene(new Scene(layout, 1200, 700));
+        Scene scene = new Scene(layout, 1200, 700);
+        scene.getStylesheets().add("javaFX.css");
+        this.setScene(scene);
+        this.setTitle("Miss Universe Ultimate Quiz");
+        this.setResizable(false);
+        this.show();
     }
 
-    private static void loadFinalistList() {
+    private void loadFinalistList() {
         //https://stackoverflow.com/questions/41201043/javafx-combobox-using-object-property
         finalistObservableList = FXCollections.observableArrayList(Finalists.getAll());
 
@@ -177,7 +181,7 @@ public class Login {
         });
     }
 
-    private static void login() {
+    private void login() {
         if (finalistList.getValue() == null)
             return;
 
@@ -202,7 +206,8 @@ public class Login {
             countryAnthem.play();
             countryAnthem.setOnEndOfMedia(() -> {
                 countryAnthem.stop();
-                Test.loadScene(finalistList.getValue());
+                new Test(finalistList.getValue());
+                this.hide();
             });
             Dialog alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Loading");
@@ -221,7 +226,8 @@ public class Login {
             skipBtn.setOnAction(e -> {
                 //Change forms here
                 countryAnthem.stop();
-                Test.loadScene(finalistList.getValue());
+                new Test(finalistList.getValue());
+                this.hide();
             });
 
             loginDelay = 3;
@@ -245,7 +251,7 @@ public class Login {
         }
     }
 
-    private static void exit() {
+    private void exit() {
         System.exit(0);
     }
 }

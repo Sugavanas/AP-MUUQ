@@ -28,12 +28,11 @@ public class Main extends Application{
         primaryStage.setTitle("Miss Universe Ultimate Quiz");
         primaryStage.setResizable(false);
 
-        Login.loadScene();
+        new Login();
         //sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
         //sample.scenes.Result.loadScene(Answers.fileIO.getByID(337066));
         //Winner.loadScene();
-
-        primaryStage.show();
+        //primaryStage.show();
     }
 
     public static void main(String[] args) {

@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import sample.Main;
@@ -17,17 +18,26 @@ import sample.objects.Answer;
 
 import java.util.ArrayList;
 
-public class Result {
+public class Result extends Stage {
 
-    private static Pane selectionPane, resultPane;
-    private static VBox detailedResultPane;
-    private static ScrollPane detailedResultScrollPane;
-    private static Label scoreDetails, percentageScore;
+    private Pane selectionPane, resultPane;
+    private VBox detailedResultPane;
+    private ScrollPane detailedResultScrollPane;
+    private Label scoreDetails, percentageScore;
 
-    private static ComboBox<Answer> resultDropDown;
-    private static ObservableList<Answer> answersObservableList;
+    private ComboBox<Answer> resultDropDown;
+    private ObservableList<Answer> answersObservableList;
 
-    public static void loadScene() {
+    public Result() {
+        loadStage();
+    }
+
+    public Result(Answer a) {
+        loadStage();
+        resultDropDown.setValue(a);
+    }
+
+    private void loadStage() {
         loadResults();
 
         resultDropDown.setLayoutX(0);
@@ -71,15 +81,15 @@ public class Result {
         layout.getChildren().addAll(selectionPane);
         layout.getChildren().addAll(resultPane);
 
-        Main.loadScene(new Scene(layout, 1200, 700));
+        Scene scene = new Scene(layout, 1200, 700);
+        scene.getStylesheets().add("javaFX.css");
+        this.setScene(scene);
+        this.setTitle("Miss Universe Ultimate Quiz");
+        this.setResizable(false);
+        this.show();
     }
 
-    public static void loadScene(Answer a) {
-        loadScene();
-        resultDropDown.setValue(a);
-    }
-
-    private static void loadResults() {
+    private void loadResults() {
         answersObservableList = FXCollections.observableArrayList(Answers.getAll());
         resultDropDown = new ComboBox(answersObservableList);
 
@@ -125,7 +135,7 @@ public class Result {
         });
     }
 
-    private static void loadResult(Answer a) {
+    private void loadResult(Answer a) {
         Questions.load();
         ArrayList<String> fAnswers = a.getAnswers();
         detailedResultPane.getChildren().clear();

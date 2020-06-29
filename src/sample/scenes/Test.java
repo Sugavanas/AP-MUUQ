@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.Main;
 import sample.db.Answers;
@@ -24,31 +25,31 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-public class Test {
-    private static Pane testPane, finalistPane, questionContainerPane, questionPane, bottomPane;
+public class Test extends Stage {
+    private Pane testPane, finalistPane, questionContainerPane, questionPane, bottomPane;
 
-    private static Label lblFinalistName, lblFinalistID, lblTimeRemaining;
-    private static ImageView ivCountryFlag;
+    private Label lblFinalistName, lblFinalistID, lblTimeRemaining;
+    private ImageView ivCountryFlag;
 
-    private static Label lblQuestionNumber, lblQuestion;
+    private Label lblQuestionNumber, lblQuestion;
 
-    private static ImageView ivQuestion;
-    private static ToggleGroup tg;
-    private static RadioButton a, b, c, d;
+    private ImageView ivQuestion;
+    private ToggleGroup tg;
+    private RadioButton a, b, c, d;
 
-    private static ScrollPane questionListScrollPane;
-    private static HBox questionListPane;
-    private static Button btnPrevious, btnNext, btnSubmit;
-    private static ArrayList<Button> questionBtnList;
+    private ScrollPane questionListScrollPane;
+    private HBox questionListPane;
+    private Button btnPrevious, btnNext, btnSubmit;
+    private ArrayList<Button> questionBtnList;
 
-    private static int currentQuestion;
-    private static Question currentQuestionObject;
-    private static Finalist finalist;
-    private static String[] answers;
-    private static int timeRemaining;
-    private static Timeline timer;
+    private int currentQuestion;
+    private Question currentQuestionObject;
+    private Finalist finalist;
+    private String[] answers;
+    private int timeRemaining;
+    private Timeline timer;
 
-    public static void loadScene(Finalist f) {
+    public Test(Finalist f) {
         finalist = f;
         timeRemaining = 300; //<---- Set time in seconds here
         loadQuestions();
@@ -181,10 +182,15 @@ public class Test {
         timer.setCycleCount(timeRemaining);
         timer.play();
 
-        Main.loadScene(new Scene(layout, 1200, 700));
+        Scene scene = new Scene(layout, 1200, 700);
+        scene.getStylesheets().add("javaFX.css");
+        this.setScene(scene);
+        this.setTitle("Miss Universe Ultimate Quiz");
+        this.setResizable(false);
+        this.show();
     }
 
-    private static void loadQuestion(int number) {
+    private void loadQuestion(int number) {
         checkQuestion();
 
         //load the next question
@@ -231,7 +237,7 @@ public class Test {
         }
     }
 
-    private static void loadTypeA() {
+    private void loadTypeA() {
         a.setText(currentQuestionObject.getOptions().get(0));
         b.setText(currentQuestionObject.getOptions().get(1));
         c.setText(currentQuestionObject.getOptions().get(2));
@@ -250,7 +256,7 @@ public class Test {
         d.setLayoutY(250);
     }
 
-    private static void loadTypeB() {
+    private void loadTypeB() {
         ivQuestion.setImage(currentQuestionObject.getQuestionImage());
         ivQuestion.setLayoutX(500 - Main.getCenterWidth(ivQuestion));
         ivQuestion.setVisible(true);
@@ -274,7 +280,7 @@ public class Test {
 
     }
 
-    private static void loadTypeC() {
+    private void loadTypeC() {
         ArrayList<ImageView> options = currentQuestionObject.getImageOptions();
 
         options.get(0).setPreserveRatio(true);
@@ -309,7 +315,7 @@ public class Test {
         d.setLayoutY(270);
     }
 
-    private static void checkQuestion() {
+    private void checkQuestion() {
         //remove all styling first
         questionBtnList.stream()
                 .filter(btn -> btn.getText().equals(String.valueOf(currentQuestion)))
@@ -325,7 +331,7 @@ public class Test {
         }
     }
 
-    private static String getSelectedAnswer(){
+    private String getSelectedAnswer(){
         if(a.isSelected())
             return "A";
         else if(b.isSelected())
@@ -336,7 +342,7 @@ public class Test {
             return "D";
         return "F";
     }
-    private static void clearQuestion() {
+    private void clearQuestion() {
         ivQuestion.setVisible(false);
         a.setText("");
         b.setText("");
@@ -348,7 +354,7 @@ public class Test {
         d.setGraphic(null);
     }
 
-    public static void loadQuestions() {
+    public void loadQuestions() {
         Questions.load();
         currentQuestion = 1;
         answers = new String[Questions.count()];
@@ -371,21 +377,21 @@ public class Test {
         questionListPane.setMinHeight(questionListPane.getHeight());
     }
 
-    private static void back() {
+    private void back() {
         loadQuestion(currentQuestion - 1);
         btnNext.setDisable(false);
         if(currentQuestion - 1 <= 0)
             btnPrevious.setDisable(true);
     }
 
-    private static void next() {
+    private void next() {
         loadQuestion(currentQuestion + 1);
         btnPrevious.setDisable(false);
         if(currentQuestion + 1 > Questions.count())
             btnNext.setDisable(true);
     }
 
-    private static void submit() {
+    private void submit() {
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
         timer.pause();
@@ -403,7 +409,7 @@ public class Test {
         }
     }
 
-    private static void processSubmit() {
+    private void processSubmit() {
         timer.stop();
         checkQuestion(); //just to make sure the current question in view is saved as well.
         for (int i = 0; i < answers.length; i++) {
@@ -412,6 +418,7 @@ public class Test {
             }
         }
         Answer a = Answers.addSubmission(finalist.getID(), answers);
-        Result.loadScene(a);
+        Result r = new Result(a);
+        this.hide();
     }
 }
