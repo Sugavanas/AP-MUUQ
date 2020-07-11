@@ -250,7 +250,7 @@ public class Login extends Stage {
                 this.hide();
             });
 
-            loginDelay = 3;
+            loginDelay = 60;
             loginTimeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
