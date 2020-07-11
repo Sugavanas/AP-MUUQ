@@ -8,6 +8,16 @@
     -fx-text-fill: white;
 }
 
+#btnResult {
+    -fx-background-color: #0147bf;
+    -fx-text-fill: white;
+}
+
+#btnWinner {
+    -fx-background-color: #ff9900;
+    -fx-text-fill: white;
+}
+
 .btnQuestionNumber {
     -fx-background-color: #fff;
     -fx-text-fill: black;

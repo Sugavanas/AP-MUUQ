@@ -25,26 +25,6 @@ public class FileScanner {
     }
 
     /**
-     * Check if a directory exists and if not create it recursively
-     * This makes sure if the data folder doesn't exist, we don't get an error
-     *
-     * @return Boolean
-     */
-    public static Boolean createDirectory() {
-        if (Files.exists(Paths.get(dataDirectory)))
-            return true;
-
-        try {
-            Path path = Paths.get(dataDirectory);
-            Files.createDirectory(path);
-            return true;
-        } catch (IOException io) {
-            //TODO: LOG ERROR
-            return false;
-        }
-    }
-
-    /**
      * Read the file and return a arraylist containing all lines.
      * @param fileName
      * @return

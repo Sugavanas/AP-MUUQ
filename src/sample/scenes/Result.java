@@ -24,6 +24,7 @@ public class Result extends Stage {
     private VBox detailedResultPane;
     private ScrollPane detailedResultScrollPane;
     private Label scoreDetails, percentageScore;
+    private Button btnBack;
 
     private ComboBox<Answer> resultDropDown;
     private ObservableList<Answer> answersObservableList;
@@ -77,9 +78,20 @@ public class Result extends Stage {
         resultPane.setLayoutY(200);
         resultPane.getChildren().addAll(detailedResultScrollPane, scoreDetails, percentageScore);
 
+        btnBack = new Button("Go Back");
+        btnBack.setLayoutX(20);
+        btnBack.setLayoutY(20);
+        btnBack.setId("btnExit");
+        btnBack.setMinSize(75, 30);
+        btnBack.setOnAction(e -> {
+            new Login();
+            this.hide();
+        });
+
         Pane layout = new Pane();
         layout.getChildren().addAll(selectionPane);
         layout.getChildren().addAll(resultPane);
+        layout.getChildren().addAll(btnBack);
 
         Scene scene = new Scene(layout, 1200, 700);
         scene.getStylesheets().add("javaFX.css");

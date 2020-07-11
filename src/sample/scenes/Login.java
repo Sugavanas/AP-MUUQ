@@ -26,7 +26,7 @@ public class Login extends Stage {
 
     private Label title, instruction, lblName, lblPassword, lblCountry;
     private PasswordField password;
-    private Button btnLogin, btnExit;
+    private Button btnLogin, btnExit, btnResult, btnWinner;
     private ImageView finalistImage, countryFlag;
 
     private ObservableList<Finalist> finalistObservableList;
@@ -118,8 +118,28 @@ public class Login extends Stage {
         loginPane.setLayoutX(450);
         loginPane.setLayoutY(75);
 
+        btnWinner = new Button("Winner");
+        btnWinner.setLayoutX(1100);
+        btnWinner.setLayoutY(650);
+        btnWinner.setId("btnWinner");
+        btnWinner.setMinSize(75, 30);
+        btnWinner.setOnAction(e -> {
+            new Winner();
+            this.hide();
+        });
+
+        btnResult = new Button("Results");
+        btnResult.setLayoutX(1000);
+        btnResult.setLayoutY(650);
+        btnResult.setId("btnResult");
+        btnResult.setMinSize(75, 30);
+        btnResult.setOnAction(e -> {
+            new Result();
+            this.hide();
+        });
+
         Pane layout = new Pane();
-        layout.getChildren().addAll(loginPane);
+        layout.getChildren().addAll(loginPane, btnWinner, btnResult);
         Scene scene = new Scene(layout, 1200, 700);
         scene.getStylesheets().add("javaFX.css");
         this.setScene(scene);
