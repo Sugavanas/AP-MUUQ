@@ -37,7 +37,8 @@ public class Login extends Stage {
 
     private Timeline loginTimeline;
     private int loginDelay = 60;
-
+    private boolean testShown = false;
+    private Dialog loginDialog;
     public Login() {
         //First load all the data
         loadFinalistList();
@@ -225,25 +226,33 @@ public class Login extends Stage {
             countryAnthem = new MediaPlayer(finalistList.getValue().getAnthem());
             countryAnthem.play();
             countryAnthem.setOnEndOfMedia(() -> {
+                if(testShown)
+                    return; //test already shown
+
                 countryAnthem.stop();
                 new Test(finalistList.getValue());
                 this.hide();
+                loginDialog.hide();
+                testShown = true;
             });
-            Dialog alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Loading");
-            alert.setTitle("MUUQ is loading!!");
-            alert.setContentText("Wait for");
-            ((Stage) alert.getDialogPane().getScene().getWindow()).setOnCloseRequest(e -> {
+            loginDialog = new Alert(Alert.AlertType.INFORMATION);
+            loginDialog.setTitle("Loading");
+            loginDialog.setTitle("MUUQ is loading!!");
+            loginDialog.setContentText("Wait for");
+            ((Stage) loginDialog.getDialogPane().getScene().getWindow()).setOnCloseRequest(e -> {
                 e.consume();
             });
-            alert.getDialogPane()
+            loginDialog.getDialogPane()
                     .getButtonTypes().stream()
-                    .map(alert.getDialogPane()::lookupButton)
+                    .map(loginDialog.getDialogPane()::lookupButton)
                     .forEach(btn -> ButtonBar.setButtonUniformSize(btn, false));
-            final Button skipBtn = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+            final Button skipBtn = (Button) loginDialog.getDialogPane().lookupButton(ButtonType.OK);
             skipBtn.setDisable(true);
             skipBtn.setMinSize(100, 20);
             skipBtn.setOnAction(e -> {
+                if(testShown)
+                    return; //test already shown
+
                 //Change forms here
                 countryAnthem.stop();
                 new Test(finalistList.getValue());
@@ -267,7 +276,7 @@ public class Login extends Stage {
             loginTimeline.play();
 
 
-            alert.show();
+            loginDialog.show();
         }
     }
 
