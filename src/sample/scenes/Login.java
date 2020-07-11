@@ -36,7 +36,7 @@ public class Login extends Stage {
     private MediaPlayer countryAnthem;
 
     private Timeline loginTimeline;
-    private int loginDelay = 60;
+    private int loginDelay = 60; //<---- Change login delay in line 263 not here
     private boolean testShown = false;
     private Dialog loginDialog;
     public Login() {
@@ -222,7 +222,7 @@ public class Login extends Stage {
             alert.showAndWait();
         } else {
             //MAGIC HAPPENS
-
+            testShown = false;
             countryAnthem = new MediaPlayer(finalistList.getValue().getAnthem());
             countryAnthem.play();
             countryAnthem.setOnEndOfMedia(() -> {
@@ -257,9 +257,10 @@ public class Login extends Stage {
                 countryAnthem.stop();
                 new Test(finalistList.getValue());
                 this.hide();
+                testShown = true;
             });
 
-            loginDelay = 60;
+            loginDelay = 60; //<-------------- Change login delay here
             loginTimeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {

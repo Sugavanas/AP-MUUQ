@@ -1,10 +1,25 @@
-1:B:Who designed the Eiffel Tower?:Minah:Mamat:Joyah:x
-2:C:Where is this building located?:klcc.jpg:Tokyo:Paris:Kuala Lumpur:y
-1:C:Who shot JF Kennedy?:Mamat:Minah:None of the above:z
-3:B:Which one is Mamat Trump?:klcc.jpg:klcc.jpg:klcc.jpg:klcc.jpg
-1:A:A:Who created IPhone?:Apple:Isee:Idonno:b
+1:C:What is the continent of Tunisia?:Europe:Asia:Africa:Antartika
+1:A:who is the president of Tunisia?:Kais Saied:Joko Widodo:Donald Trump:Mahmat Trump
+3:B:Which one is Mr. Kais Saied?:DonaldTrump.jpg:KaisSaeid.jpg:mrSham.jpg:JokoWidodo.jpg
+2:A:Tunisia has lots of historical places and heritage. What's the name of the bulding below?:bourguibamausoleum.jpg:Bourguiba Mausoleum:DK Senza:Mahmat's Chamber:Taylor's University
+2:A:Tunisia has a rich historical background which makes the country very interesting. What's the name of this monument in Tunisia?:ElJemAmphitheatre.jpg:ElJem Amphitheatre:Mahmat's Majestic Monument:Statue of Liberty:Twin tower
 1:D:Which of these is a lake situated in Bolivia?:Lake Oruro:Lake Yungas:Lake Pando:Lake Titicaca
-1:A:What is capital of Bolivia?:Sucre:Oslo:Lica:Nairobi
+1:A:What is the capital of Bolivia?:Sucre:Oslo:Lica:Nairobi
 3:C:Which country did Bolivia gain independence from?:italy.png:france.png:spain.png:cambodia.png
 2:B:Which country flag is this?:bolivia.png:USA:Bolivia:Malaysia:Mexico
 3:A:Which one of the following is the Tiwanku ruins?:bo51.jpg:bo52.jpg:bo53.jpg:bo54.jpg
+1:A:The _________ is written in the national flag of Bhutan:chicken:dragon:cat:dog:
+1:A:The population of Bhutan is __________ people:650,000:680,000:720,000:750,000:
+3:B:What is the special product of Bhutan?:wheat.jpg:corn.jpg:sugar.jpg:durian.jpg:
+2:A:What is the name of this place?:parotaktsang.jpg:Paro Taktsang:Kuala Lumpur:SiChuan:New York
+2:A:Where is this building located?:punakhadzong.jpg:Bhutan:Malaysia:Singapore:France
+1:B:What is the population in Antigua and Barbuda about?:63,000:95,900:55,500:45,000
+3:B:Which one is Antigua and Barbud?:Nevis.jpg:AnB_map.png:Saint.png:Virgin.jpg
+1:C:The official language in Antigua and Barbuda is?:Spanish:Portuguese:English:Arabic
+2:B:What is the name of this monument?:monument.jpg:Antigua Monument:VC Bird Monument:Barbuda Monument:Barack Obama Monument
+1:B:Antigua was colonized by:American:Britain:Spanish:Purtogise
+1:D:What is the official language of Sierra Leone?:Creole:Afrikaans:Portuguese:English
+3:D:Which of these pictures represent a natinoal heritage of Sierra Leone?:StPaul.jpg:Mruslavememorial.jpg:MonteCristo.jpg:DeRuyterStone.jpg
+2:B:This is the highest Peak of Sierra Leone.What is its name?:MtBintumani.jpg:Mount Kilimanjaro:Mount Bintumani:Mount Kinabalu:Mount Fuji
+1:A:Who was the first Prime Minister of Sierra Leone?:Sir Milton Margai:Sir Seewoosagur Ramgoolam:Sir Albert Margai:Sir Anerood Jugnauth
+3:A:A national coat of arms is a symbol which denotes an independent state in the form of a heraldic achievement.Which one of these pictures is the coat of arms of Sierra Leone?:SierraLeone.png:Barbados.png:Mauritius.png:Malaysia.png
