@@ -361,7 +361,7 @@ public class Test extends Stage {
         questionBtnList = new ArrayList<>();
         for (int i = 1; i <= Questions.count(); i++) {
             Button btn = new Button(String.valueOf(i));
-            btn.setMinWidth(30);
+            btn.setMinWidth(40);
             btn.getStyleClass().add("btnQuestionNumber");
             int finalI = i; //copying i to finalI so it can be used in lambda expression
             btn.setOnAction(e -> loadQuestion(finalI));

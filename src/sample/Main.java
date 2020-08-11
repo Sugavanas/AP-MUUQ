@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.db.Answers;
 import sample.db.Finalists;
+import sample.objects.Finalist;
 import sample.scenes.Login;
+import sample.scenes.Test;
 import sample.scenes.Winner;
 
 import java.awt.*;
@@ -28,7 +30,8 @@ public class Main extends Application{
         primaryStage.setTitle("Miss Universe Ultimate Quiz");
         primaryStage.setResizable(false);
 
-        new Login();
+        Finalists.load();
+        new Test(Finalists.getByID("337066"));
         //sample.scenes.Test.loadScene(Finalists.getFileIO().getByID(337066));
         //sample.scenes.Result.loadScene(Answers.fileIO.getByID(337066));
         //Winner.loadScene();
